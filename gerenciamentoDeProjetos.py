@@ -1,0 +1,56 @@
+import datetime
+import pyttsx3
+
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def get_task():
+    speak("Qual é a próxima tarefa?")
+    task = input("Qual é a próxima tarefa? ")
+    return task
+
+def get_deadline():
+    speak("Qual é o prazo para esta tarefa? (Por favor, digite a data no formato dd/mm/aaaa)")
+    deadline = input("Qual é o prazo para esta tarefa? (Por favor, digite a data no formato dd/mm/aaaa) ")
+    deadline = datetime.datetime.strptime(deadline, "%d/%m/%Y").date()
+    return deadline
+
+def get_project():
+    speak("Em qual projeto esta tarefa se encaixa?")
+    project = input("Em qual projeto esta tarefa se encaixa? ")
+    return project
+
+def add_task(tasks):
+    task = get_task()
+    deadline = get_deadline()
+    project = get_project()
+    tasks.append({"task": task, "deadline": deadline, "project": project})
+    speak("Tarefa adicionada com sucesso!")
+
+def show_tasks(tasks):
+    speak("Suas tarefas são as seguintes:")
+    for i, task in enumerate(tasks):
+        speak(f"Tarefa {i+1}: {task['task']}. Prazo: {task['deadline']}. Projeto: {task['project']}")
+
+def main():
+    speak("Bem-vindo ao assistente de gerenciamento de projetos. O que você gostaria de fazer?")
+    tasks = []
+    while True:
+        speak("Você pode adicionar uma tarefa, ver suas tarefas ou sair.")
+        action = input("Você pode adicionar uma tarefa, ver suas tarefas ou sair. ")
+        if action.lower() == "adicionar":
+            add_task(tasks)
+        elif action.lower() == "ver":
+            show_tasks(tasks)
+        elif action.lower() == "sair":
+            break
+        else:
+            speak("Desculpe, eu não entendi o que você quer fazer. Por favor, tente novamente.")
+
+if __name__ == "__main__":
+    main()
+
+
